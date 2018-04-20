@@ -3,10 +3,15 @@ import React, { PureComponent } from 'react';
 import SlotWrapper from './Wrapper/SlotWrapper';
 
 class Slot extends PureComponent {
+  handleClick(e) {
+    e.preventDefault();
+    console.log(this.props.id);
+  }
+
   render() {
-    console.log(this.props);
     return (
-        <SlotWrapper />
+        <SlotWrapper
+          onClick={this.handleClick.bind(this)} />
     );
   }
 }
