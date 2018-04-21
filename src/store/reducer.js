@@ -1,4 +1,4 @@
-import { buildIntialBoard } from '../../utils';
+import { buildIntialBoard } from '../utils';
 import { UPDATE_BOARD, RESET_BOARD } from './actionTypes';
 
 const initialState = {

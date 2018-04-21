@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateBoard } from '../../store/app/actions';
-import { validateMove, checkWinner } from '../../utils';
-import { SlotWrapper } from '../../components';
+import { updateBoard } from '../store/actions';
+import { validateMove, checkWinner } from '../utils';
+import { SlotWrapper } from '../components';
 
 class Slot extends PureComponent {
   handleClick = this.handleClick.bind(this);
