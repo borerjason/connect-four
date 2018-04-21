@@ -856,13 +856,12 @@ var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)({ rootReducer: _reducers2.default });
+var store = (0, _redux.createStore)(_reducers2.default);
 
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
   { store: store },
-  _react2.default.createElement(_App2.default, null),
-  ','
+  _react2.default.createElement(_App2.default, null)
 ), document.getElementById('app'));
 
 /***/ }),
@@ -19519,8 +19518,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
@@ -19535,35 +19532,14 @@ var _Board2 = _interopRequireDefault(_Board);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var App = function (_Component) {
-  _inherits(App, _Component);
-
-  function App() {
-    _classCallCheck(this, App);
-
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-  }
-
-  _createClass(App, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(_Header2.default, null),
-        _react2.default.createElement(_Board2.default, null)
-      );
-    }
-  }]);
-
-  return App;
-}(_react.Component);
+var App = function App() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_Header2.default, null),
+    _react2.default.createElement(_Board2.default, null)
+  );
+};
 
 exports.default = App;
 
@@ -19681,7 +19657,8 @@ var Board = function (_PureComponent) {
         board.map(function (slot, index) {
           return _react2.default.createElement(_Slot2.default, {
             id: index,
-            value: slot
+            value: slot,
+            key: Math.random() * 1000
           });
         })
       );
@@ -19726,6 +19703,16 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = __webpack_require__(38);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactRedux = __webpack_require__(58);
+
+var _actions = __webpack_require__(85);
+
+var _utils = __webpack_require__(86);
+
 var _SlotWrapper = __webpack_require__(45);
 
 var _SlotWrapper2 = _interopRequireDefault(_SlotWrapper);
@@ -19751,20 +19738,52 @@ var Slot = function (_PureComponent) {
     key: 'handleClick',
     value: function handleClick(e) {
       e.preventDefault();
-      console.log(this.props.id);
+      var _props = this.props,
+          id = _props.id,
+          updateBoardState = _props.updateBoardState,
+          board = _props.board.board;
+
+      console.log(this.props);
+      if ((0, _utils.validateMove)(id, board)) {
+        updateBoardState(id, 'blue');
+      } else {
+        console.log('Invalid Move');
+      }
     }
   }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(_SlotWrapper2.default, {
-        onClick: this.handleClick.bind(this) });
+        onClick: this.handleClick.bind(this)
+      });
     }
   }]);
 
   return Slot;
 }(_react.PureComponent);
 
-exports.default = Slot;
+Slot.propTypes = {
+  id: _propTypes2.default.number.isRequired,
+  updateBoardState: _propTypes2.default.func.isRequired,
+  board: _propTypes2.default.object
+};
+
+var mapStateToProps = function mapStateToProps(_ref) {
+  var board = _ref.board;
+  return {
+    board: board
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    updateBoardState: function updateBoardState(id, player) {
+      dispatch((0, _actions.updateBoard)(id, player));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Slot);
 
 /***/ }),
 /* 31 */
@@ -26905,7 +26924,7 @@ exports.default = (0, _redux.combineReducers)({
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = boardReducer;
+exports.default = board;
 
 var _dummyData = __webpack_require__(29);
 
@@ -26913,16 +26932,17 @@ var _actionTypes = __webpack_require__(84);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var initialState = { board: (0, _dummyData.makeInitialBoard)() };
+var initialState = { board: (0, _dummyData.buildIntialBoard)() };
 
-function boardReducer() {
+function board() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments[1];
 
   if (action.type === _actionTypes.UPDATE_BOARD) {
-    var board = [].concat(_toConsumableArray(state.board));
-    board[action.payload.id] = action.payload.player;
-    return board;
+    console.log('state.board', state.board);
+    var newBoard = [].concat(_toConsumableArray(state.board));
+    newBoard[action.payload.id] = action.payload.player;
+    return { board: newBoard };
   }
 
   return state;
@@ -26939,6 +26959,53 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var UPDATE_BOARD = exports.UPDATE_BOARD = 'CONNECTFOUR/UPDATE_BOARD';
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.updateBoard = undefined;
+
+var _actionTypes = __webpack_require__(84);
+
+var actionTypes = _interopRequireWildcard(_actionTypes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var updateBoard = exports.updateBoard = function updateBoard(id, player) {
+  return {
+    type: actionTypes.UPDATE_BOARD,
+    payload: { id: id, player: player }
+  };
+};
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+
+/**
+ * Summary: Determines if a move is valid.
+ */
+var validateMove = exports.validateMove = function validateMove(id, board) {
+  var move = board[id];
+  var below = board[id + 7];
+
+  return move === '' && below !== '';
+};
 
 /***/ })
 /******/ ]);

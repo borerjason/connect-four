@@ -5,11 +5,11 @@ import { createStore } from 'redux';
 import rootReducer from '../src/store/reducers';
 import App from './containers/App/App';
 
-const store = createStore({ rootReducer });
+const store = createStore(rootReducer);
 
 render(
   <Provider store={store}>
-    <App />,
+    <App />
   </Provider>,
   document.getElementById('app'),
 );

@@ -13,6 +13,7 @@ class Board extends PureComponent {
           <Slot
             id={index} 
             value={slot}
+            key={Math.random() * 1000}
           />)}
       </BoardWrapper>  
     );
