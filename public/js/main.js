@@ -19562,6 +19562,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(58);
 
+var _actions = __webpack_require__(85);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19584,7 +19586,8 @@ var Header = function (_PureComponent) {
     value: function render() {
       var _props = this.props,
           isWinner = _props.isWinner,
-          color = _props.color;
+          color = _props.color,
+          handleClick = _props.handleClick;
 
       var lastColor = color === 'Blue' ? 'Red' : 'Blue';
 
@@ -19608,6 +19611,14 @@ var Header = function (_PureComponent) {
             null,
             lastColor,
             ' Wins! '
+          ),
+          _react2.default.createElement(
+            'button',
+            {
+              className: 'btn btn-primary',
+              onClick: handleClick
+            },
+            'Play Again'
           )
         )
       );
@@ -19617,6 +19628,14 @@ var Header = function (_PureComponent) {
   return Header;
 }(_react.PureComponent);
 
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    handleClick: function handleClick() {
+      dispatch((0, _actions.resetBoard)());
+    }
+  };
+};
+
 var mapStateToProps = function mapStateToProps(_ref) {
   var _ref$game = _ref.game,
       isWinner = _ref$game.isWinner,
@@ -19624,7 +19643,7 @@ var mapStateToProps = function mapStateToProps(_ref) {
   return { isWinner: isWinner, color: color };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Header);
 
 /***/ }),
 /* 28 */
@@ -19778,7 +19797,6 @@ var Slot = function (_PureComponent) {
           id = _props2.id,
           board = _props2.game.board;
 
-      console.log('board id', board[id]);
       return _react2.default.createElement(_SlotWrapper2.default, {
         color: board[id],
         onClick: this.handleClick.bind(this)
@@ -26985,6 +27003,9 @@ function game() {
       isWinner: isWinner
     };
   }
+  if (action.type === _actionTypes.RESET_BOARD) {
+    return initialState;
+  }
 
   return state;
 }
@@ -27000,6 +27021,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var UPDATE_BOARD = exports.UPDATE_BOARD = 'CONNECTFOUR/UPDATE_BOARD';
+var RESET_BOARD = exports.RESET_BOARD = 'CONNECTFOUR/RESET_BOARD';
 
 /***/ }),
 /* 85 */
@@ -27011,7 +27033,7 @@ var UPDATE_BOARD = exports.UPDATE_BOARD = 'CONNECTFOUR/UPDATE_BOARD';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateBoard = undefined;
+exports.resetBoard = exports.updateBoard = undefined;
 
 var _actionTypes = __webpack_require__(84);
 
@@ -27024,6 +27046,10 @@ var updateBoard = exports.updateBoard = function updateBoard(id, color, isWinner
     type: actionTypes.UPDATE_BOARD,
     payload: { id: id, color: color, isWinner: isWinner }
   };
+};
+
+var resetBoard = exports.resetBoard = function resetBoard() {
+  return { type: actionTypes.RESET_BOARD };
 };
 
 /***/ }),

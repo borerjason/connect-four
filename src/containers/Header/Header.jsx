@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { resetBoard } from '../../store/app/actions';
 
 class Header extends PureComponent {
+
   render() {
-    const { isWinner, color } = this.props;
+    const { isWinner, color, handleClick } = this.props;
     const lastColor = color === 'Blue' ? 'Red' : 'Blue';
-    
+
     return (
 
       <div>
@@ -15,13 +17,23 @@ class Header extends PureComponent {
           </div> :
           <div>
             <p>{lastColor} Wins! </p>
+            <button 
+              className="btn btn-primary"
+              onClick={handleClick}
+              >Play Again
+            </button>
           </div>
         }
       </div>
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  handleClick: () => {
+    dispatch(resetBoard());
+  },
+});
 
 const mapStateToProps = ({ game: { isWinner, color } }) => ({ isWinner, color });
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

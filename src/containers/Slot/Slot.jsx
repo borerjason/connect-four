@@ -20,7 +20,6 @@ class Slot extends PureComponent {
 
   render() {
     const { id, game: { board } } = this.props;
-    console.log('board id', board[id]);
     return (
       <SlotWrapper
         color={board[id]}

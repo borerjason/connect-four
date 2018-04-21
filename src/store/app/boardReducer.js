@@ -1,5 +1,5 @@
 import { buildIntialBoard } from '../../utils';
-import { UPDATE_BOARD } from './actionTypes';
+import { UPDATE_BOARD, RESET_BOARD } from './actionTypes';
 
 const initialState = {
   board: buildIntialBoard(),
@@ -19,6 +19,9 @@ export default function game(state = initialState, action) {
       color: nextColor,
       isWinner,
     };
+  }
+  if (action.type === RESET_BOARD) {
+    return initialState;
   }
 
   return state;
