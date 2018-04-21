@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { resetBoard } from '../../store/app/actions';
+import { Wrapper, Msg } from '../../components';
 
 class Header extends PureComponent {
 
@@ -10,21 +11,27 @@ class Header extends PureComponent {
 
     return (
 
-      <div>
+      <Wrapper>
         { !isWinner ?
-          <div>
-            <p>{color}'s turn </p>
-          </div> :
-          <div>
-            <p>{lastColor} Wins! </p>
-            <button 
+          <Wrapper>
+            <Msg
+              color={color}
+            >{color}'s turn
+            </Msg>
+          </Wrapper> :
+          <Wrapper>
+            <Msg
+              color={lastColor}
+            >{lastColor} Wins!
+            </Msg>
+            <button
               className="btn btn-primary"
               onClick={handleClick}
-              >Play Again
+            >Play Again
             </button>
-          </div>
+          </Wrapper>
         }
-      </div>
+      </Wrapper>
     );
   }
 }

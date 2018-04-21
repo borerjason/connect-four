@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Slot from '../Slot/Slot';
-// import { buildIntialBoard } from '../../utils/dummyData';
-import BoardWrapper from '../../components/Wrapper';
+import { BoardWrapper } from '../../components';
 
 class Board extends PureComponent {
   render() {
-    const board = this.props.board;
+    const { board } = this.props;
 
     return (
       <BoardWrapper> 

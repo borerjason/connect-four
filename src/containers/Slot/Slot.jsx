@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateBoard } from '../../store/app/actions';
 import { validateMove, checkWinner } from '../../utils';
-
-import SlotWrapper from './Wrapper/SlotWrapper';
+import { SlotWrapper } from '../../components';
 
 class Slot extends PureComponent {
   handleClick = this.handleClick.bind(this);
@@ -14,8 +13,6 @@ class Slot extends PureComponent {
     if (validateMove(id, board, isWinner)) {
       const winner = checkWinner(id, board, color);
       updateBoardState(id, color, winner);
-    } else {
-      alert('Invalid Move');
     }
   }
 
@@ -40,7 +37,6 @@ Slot.propTypes = {
 };
 
 const mapStateToProps = ({ board, color, isWinner }) => ({ board, color, isWinner });
-
 
 const mapDispatchToProps = dispatch => ({
   updateBoardState: (id, color, isWinner) => {

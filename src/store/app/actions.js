@@ -1,8 +1,8 @@
-import * as actionTypes from './actionTypes';
+import { UPDATE_BOARD, RESET_BOARD } from './actionTypes';
 
 export const updateBoard = (id, color, isWinner) => ({
-  type: actionTypes.UPDATE_BOARD,
+  type: UPDATE_BOARD,
   payload: { id, color, isWinner },
 });
 
-export const resetBoard = () => ({ type: actionTypes.RESET_BOARD });
+export const resetBoard = () => ({ type: RESET_BOARD });

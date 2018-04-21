@@ -856,12 +856,9 @@ var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import rootReducer from '../src/store/reducers';
-var store = (0, _redux.createStore)(_reducer2.default);
-
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
-  { store: store },
+  { store: (0, _redux.createStore)(_reducer2.default) },
   _react2.default.createElement(_App2.default, null)
 ), document.getElementById('app'));
 
@@ -19531,12 +19528,20 @@ var _Board = __webpack_require__(28);
 
 var _Board2 = _interopRequireDefault(_Board);
 
+var _components = __webpack_require__(88);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = function App() {
+  console.log(_components.Body);
   return _react2.default.createElement(
-    'div',
+    _components.Body,
     null,
+    _react2.default.createElement(
+      _components.Title,
+      null,
+      'Connect Four'
+    ),
     _react2.default.createElement(_Header2.default, null),
     _react2.default.createElement(_Board2.default, null)
   );
@@ -19564,6 +19569,8 @@ var _react2 = _interopRequireDefault(_react);
 var _reactRedux = __webpack_require__(58);
 
 var _actions = __webpack_require__(85);
+
+var _components = __webpack_require__(88);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19593,25 +19600,29 @@ var Header = function (_PureComponent) {
       var lastColor = color === 'Blue' ? 'Red' : 'Blue';
 
       return _react2.default.createElement(
-        'div',
+        _components.Wrapper,
         null,
         !isWinner ? _react2.default.createElement(
-          'div',
+          _components.Wrapper,
           null,
           _react2.default.createElement(
-            'p',
-            null,
+            _components.Msg,
+            {
+              color: color
+            },
             color,
-            '\'s turn '
+            '\'s turn'
           )
         ) : _react2.default.createElement(
-          'div',
+          _components.Wrapper,
           null,
           _react2.default.createElement(
-            'p',
-            null,
+            _components.Msg,
+            {
+              color: lastColor
+            },
             lastColor,
-            ' Wins! '
+            ' Wins!'
           ),
           _react2.default.createElement(
             'button',
@@ -19668,9 +19679,7 @@ var _Slot = __webpack_require__(30);
 
 var _Slot2 = _interopRequireDefault(_Slot);
 
-var _Wrapper = __webpack_require__(31);
-
-var _Wrapper2 = _interopRequireDefault(_Wrapper);
+var _components = __webpack_require__(88);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19679,8 +19688,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import { buildIntialBoard } from '../../utils/dummyData';
-
 
 var Board = function (_PureComponent) {
   _inherits(Board, _PureComponent);
@@ -19696,8 +19703,9 @@ var Board = function (_PureComponent) {
     value: function render() {
       var board = this.props.board;
 
+
       return _react2.default.createElement(
-        _Wrapper2.default,
+        _components.BoardWrapper,
         null,
         board.map(function (slot, index) {
           return _react2.default.createElement(_Slot2.default, {
@@ -19748,9 +19756,7 @@ var _actions = __webpack_require__(85);
 
 var _utils = __webpack_require__(86);
 
-var _SlotWrapper = __webpack_require__(45);
-
-var _SlotWrapper2 = _interopRequireDefault(_SlotWrapper);
+var _components = __webpack_require__(88);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19790,8 +19796,6 @@ var Slot = function (_PureComponent) {
       if ((0, _utils.validateMove)(id, board, isWinner)) {
         var winner = (0, _utils.checkWinner)(id, board, color);
         updateBoardState(id, color, winner);
-      } else {
-        alert('Invalid Move');
       }
     }
   }, {
@@ -19802,7 +19806,7 @@ var Slot = function (_PureComponent) {
           board = _props2.board;
 
 
-      return _react2.default.createElement(_SlotWrapper2.default, {
+      return _react2.default.createElement(_components.SlotWrapper, {
         color: board[id],
         onClick: this.handleClick
       });
@@ -19838,31 +19842,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Slot);
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around;\n  align-items: center;\n  width: 500px;\n  height: 500px;\n  background-color: yellow;\n'], ['\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around;\n  align-items: center;\n  width: 500px;\n  height: 500px;\n  background-color: yellow;\n']);
-
-var _styledComponents = __webpack_require__(32);
-
-var _styledComponents2 = _interopRequireDefault(_styledComponents);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-var BoardWrapper = _styledComponents2.default.div(_templateObject);
-
-exports.default = BoardWrapper;
-
-/***/ }),
+/* 31 */,
 /* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -24804,33 +24784,7 @@ exports.isStrictMode = isStrictMode;
 
 
 /***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _templateObject = _taggedTemplateLiteral(['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: ', ';\n  margin: 5px;\n'], ['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: ', ';\n  margin: 5px;\n']);
-
-var _styledComponents = __webpack_require__(32);
-
-var _styledComponents2 = _interopRequireDefault(_styledComponents);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-var SlotWrapper = _styledComponents2.default.div(_templateObject, function (props) {
-  return props.color || '#ffffff';
-});
-
-exports.default = SlotWrapper;
-
-/***/ }),
+/* 45 */,
 /* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26974,19 +26928,15 @@ exports.resetBoard = exports.updateBoard = undefined;
 
 var _actionTypes = __webpack_require__(84);
 
-var actionTypes = _interopRequireWildcard(_actionTypes);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 var updateBoard = exports.updateBoard = function updateBoard(id, color, isWinner) {
   return {
-    type: actionTypes.UPDATE_BOARD,
+    type: _actionTypes.UPDATE_BOARD,
     payload: { id: id, color: color, isWinner: isWinner }
   };
 };
 
 var resetBoard = exports.resetBoard = function resetBoard() {
-  return { type: actionTypes.RESET_BOARD };
+  return { type: _actionTypes.RESET_BOARD };
 };
 
 /***/ }),
@@ -27206,6 +27156,49 @@ function game() {
 
   return state;
 }
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Msg = exports.Wrapper = exports.Title = exports.SlotWrapper = exports.Body = exports.BoardWrapper = undefined;
+
+var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around;\n  align-items: center;\n  width: 500px;\n  height: 500px;\n  background-color: yellow;\n'], ['\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around;\n  align-items: center;\n  width: 500px;\n  height: 500px;\n  background-color: yellow;\n']),
+    _templateObject2 = _taggedTemplateLiteral(['\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n'], ['\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n']),
+    _templateObject3 = _taggedTemplateLiteral(['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: ', ';\n  margin: 5px;\n'], ['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: ', ';\n  margin: 5px;\n']),
+    _templateObject4 = _taggedTemplateLiteral(['\n  font-family: \'Gaegu\', cursive;\n  font-size: 80px;\n'], ['\n  font-family: \'Gaegu\', cursive;\n  font-size: 80px;\n']),
+    _templateObject5 = _taggedTemplateLiteral(['\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n  width: 500px;\n  margin: 5px;\n'], ['\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n  width: 500px;\n  margin: 5px;\n']),
+    _templateObject6 = _taggedTemplateLiteral(['\n  margin: 0;\n  font-size: 32px;\n  font-family: \'Gaegu\', cursive;\n  color: ', '\n'], ['\n  margin: 0;\n  font-size: 32px;\n  font-family: \'Gaegu\', cursive;\n  color: ', '\n']);
+
+var _styledComponents = __webpack_require__(32);
+
+var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var BoardWrapper = exports.BoardWrapper = _styledComponents2.default.div(_templateObject);
+
+var Body = exports.Body = _styledComponents2.default.div(_templateObject2);
+
+var SlotWrapper = exports.SlotWrapper = _styledComponents2.default.div(_templateObject3, function (props) {
+  return props.color || '#ffffff';
+});
+
+var Title = exports.Title = _styledComponents2.default.h3(_templateObject4);
+
+var Wrapper = exports.Wrapper = _styledComponents2.default.div(_templateObject5);
+
+var Msg = exports.Msg = _styledComponents2.default.p(_templateObject6, function (props) {
+  return props.color || 'black';
+});
 
 /***/ })
 /******/ ]);
