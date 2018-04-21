@@ -846,9 +846,9 @@ var _reactRedux = __webpack_require__(58);
 
 var _redux = __webpack_require__(50);
 
-var _reducers = __webpack_require__(82);
+var _reducer = __webpack_require__(87);
 
-var _reducers2 = _interopRequireDefault(_reducers);
+var _reducer2 = _interopRequireDefault(_reducer);
 
 var _App = __webpack_require__(26);
 
@@ -856,7 +856,8 @@ var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_reducers2.default);
+// import rootReducer from '../src/store/reducers';
+var store = (0, _redux.createStore)(_reducer2.default);
 
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
@@ -19637,9 +19638,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 var mapStateToProps = function mapStateToProps(_ref) {
-  var _ref$game = _ref.game,
-      isWinner = _ref$game.isWinner,
-      color = _ref$game.color;
+  var isWinner = _ref.isWinner,
+      color = _ref.color;
   return { isWinner: isWinner, color: color };
 };
 
@@ -19694,7 +19694,7 @@ var Board = function (_PureComponent) {
   _createClass(Board, [{
     key: 'render',
     value: function render() {
-      var board = this.props.game.board;
+      var board = this.props.board;
 
       return _react2.default.createElement(
         _Wrapper2.default,
@@ -19714,10 +19714,8 @@ var Board = function (_PureComponent) {
 }(_react.PureComponent);
 
 var mapStateToProps = function mapStateToProps(_ref) {
-  var game = _ref.game;
-  return {
-    game: game
-  };
+  var board = _ref.board;
+  return { board: board };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Board);
@@ -19766,9 +19764,17 @@ var Slot = function (_PureComponent) {
   _inherits(Slot, _PureComponent);
 
   function Slot() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, Slot);
 
-    return _possibleConstructorReturn(this, (Slot.__proto__ || Object.getPrototypeOf(Slot)).apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Slot.__proto__ || Object.getPrototypeOf(Slot)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = _this.handleClick.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Slot, [{
@@ -19777,12 +19783,10 @@ var Slot = function (_PureComponent) {
       var _props = this.props,
           id = _props.id,
           updateBoardState = _props.updateBoardState,
-          _props$game = _props.game,
-          board = _props$game.board,
-          color = _props$game.color,
-          isWinner = _props$game.isWinner;
+          board = _props.board,
+          color = _props.color,
+          isWinner = _props.isWinner;
 
-      console.log('color', color);
       if ((0, _utils.validateMove)(id, board, isWinner)) {
         var winner = (0, _utils.checkWinner)(id, board, color);
         updateBoardState(id, color, winner);
@@ -19795,11 +19799,12 @@ var Slot = function (_PureComponent) {
     value: function render() {
       var _props2 = this.props,
           id = _props2.id,
-          board = _props2.game.board;
+          board = _props2.board;
+
 
       return _react2.default.createElement(_SlotWrapper2.default, {
         color: board[id],
-        onClick: this.handleClick.bind(this)
+        onClick: this.handleClick
       });
     }
   }]);
@@ -19810,12 +19815,16 @@ var Slot = function (_PureComponent) {
 Slot.propTypes = {
   id: _propTypes2.default.number.isRequired,
   updateBoardState: _propTypes2.default.func.isRequired,
-  game: _propTypes2.default.objectOf(_propTypes2.default.shape).isRequired
+  board: _propTypes2.default.arrayOf(_propTypes2.default.string).isRequired,
+  color: _propTypes2.default.string.isRequired,
+  isWinner: _propTypes2.default.bool.isRequired
 };
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var game = _ref.game;
-  return { game: game };
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var board = _ref2.board,
+      color = _ref2.color,
+      isWinner = _ref2.isWinner;
+  return { board: board, color: color, isWinner: isWinner };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
@@ -26937,80 +26946,8 @@ function verifySubselectors(mapStateToProps, mapDispatchToProps, mergeProps, dis
 }
 
 /***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _redux = __webpack_require__(50);
-
-var _boardReducer = __webpack_require__(83);
-
-var _boardReducer2 = _interopRequireDefault(_boardReducer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (0, _redux.combineReducers)({
-  game: _boardReducer2.default
-});
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = game;
-
-var _utils = __webpack_require__(86);
-
-var _actionTypes = __webpack_require__(84);
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var initialState = {
-  board: (0, _utils.buildIntialBoard)(),
-  color: 'Blue',
-  isWinner: false
-};
-
-function game() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-  var action = arguments[1];
-
-  if (action.type === _actionTypes.UPDATE_BOARD) {
-    var newBoard = [].concat(_toConsumableArray(state.board));
-    var _action$payload = action.payload,
-        id = _action$payload.id,
-        color = _action$payload.color,
-        isWinner = _action$payload.isWinner;
-
-    var nextColor = color === 'Blue' ? 'Red' : 'Blue';
-    newBoard[id] = color;
-
-    return {
-      board: newBoard,
-      color: nextColor,
-      isWinner: isWinner
-    };
-  }
-  if (action.type === _actionTypes.RESET_BOARD) {
-    return initialState;
-  }
-
-  return state;
-}
-
-/***/ }),
+/* 82 */,
+/* 83 */,
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -27218,6 +27155,57 @@ var checkWinner = exports.checkWinner = function checkWinner(id, board, color) {
   var col = id - row * 7;
   return checkRow(row, id, board, color) || checkColumn(col, id, board, color) || checkDiagonals(row, id, board, color);
 };
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = game;
+
+var _utils = __webpack_require__(86);
+
+var _actionTypes = __webpack_require__(84);
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var initialState = {
+  board: (0, _utils.buildIntialBoard)(),
+  color: 'Blue',
+  isWinner: false
+};
+
+function game() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments[1];
+
+  if (action.type === _actionTypes.UPDATE_BOARD) {
+    var newBoard = [].concat(_toConsumableArray(state.board));
+    var _action$payload = action.payload,
+        id = _action$payload.id,
+        color = _action$payload.color,
+        isWinner = _action$payload.isWinner;
+
+    var nextColor = color === 'Blue' ? 'Red' : 'Blue';
+    newBoard[id] = color;
+
+    return {
+      board: newBoard,
+      color: nextColor,
+      isWinner: isWinner
+    };
+  }
+  if (action.type === _actionTypes.RESET_BOARD) {
+    return initialState;
+  }
+
+  return state;
+}
 
 /***/ })
 /******/ ]);

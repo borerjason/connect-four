@@ -34,6 +34,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const mapStateToProps = ({ game: { isWinner, color } }) => ({ isWinner, color });
+const mapStateToProps = ({ isWinner, color }) => ({ isWinner, color });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -10,7 +10,7 @@
         "error",
         {
           "multiline": true,
-          "minProperties": 5
+          "minProperties": 6
         }
       ]
   }

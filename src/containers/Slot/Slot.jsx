@@ -7,9 +7,10 @@ import { validateMove, checkWinner } from '../../utils';
 import SlotWrapper from './Wrapper/SlotWrapper';
 
 class Slot extends PureComponent {
+  handleClick = this.handleClick.bind(this);
+
   handleClick() {
-    const { id, updateBoardState, game: { board, color, isWinner } } = this.props;
-    console.log('color', color);
+    const { id, updateBoardState, board, color, isWinner } = this.props;
     if (validateMove(id, board, isWinner)) {
       const winner = checkWinner(id, board, color);
       updateBoardState(id, color, winner);
@@ -19,11 +20,12 @@ class Slot extends PureComponent {
   }
 
   render() {
-    const { id, game: { board } } = this.props;
+    const { id, board } = this.props;
+
     return (
       <SlotWrapper
         color={board[id]}
-        onClick={this.handleClick.bind(this)}
+        onClick={this.handleClick}
       />
     );
   }
@@ -32,10 +34,13 @@ class Slot extends PureComponent {
 Slot.propTypes = {
   id: PropTypes.number.isRequired,
   updateBoardState: PropTypes.func.isRequired,
-  game: PropTypes.objectOf(PropTypes.shape).isRequired,
+  board: PropTypes.arrayOf(PropTypes.string).isRequired,
+  color: PropTypes.string.isRequired,
+  isWinner: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ game }) => ({ game });
+const mapStateToProps = ({ board, color, isWinner }) => ({ board, color, isWinner });
+
 
 const mapDispatchToProps = dispatch => ({
   updateBoardState: (id, color, isWinner) => {

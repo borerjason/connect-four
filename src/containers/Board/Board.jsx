@@ -6,7 +6,7 @@ import BoardWrapper from '../../components/Wrapper';
 
 class Board extends PureComponent {
   render() {
-    const board = this.props.game.board;
+    const board = this.props.board;
 
     return (
       <BoardWrapper> 
@@ -21,8 +21,6 @@ class Board extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ game }) => ({
-  game,
-});
+const mapStateToProps = ({ board }) => ({ board });
 
 export default connect(mapStateToProps)(Board);
