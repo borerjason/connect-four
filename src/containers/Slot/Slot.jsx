@@ -2,26 +2,28 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateBoard } from '../../store/app/actions';
-import { validateMove } from '../../utils';
+import { validateMove, checkWinner } from '../../utils';
 
 import SlotWrapper from './Wrapper/SlotWrapper';
 
 class Slot extends PureComponent {
-  handleClick(e) {
-    e.preventDefault();
-    const { id, updateBoardState, board: { board } } = this.props;
-    console.log(this.props);
+  handleClick() {
+    const { id, updateBoardState, game: { board, player, color } } = this.props;
+
     if (validateMove(id, board)) {
-      updateBoardState(id, 'Blue');
+      const isWinner = checkWinner(id, board, color);
+      updateBoardState(id, player, color);
+      console.log(isWinner);
     } else {
-      console.log('Invalid Move');
+      alert('Invalid Move');
     }
   }
 
   render() {
-    const { id, board: { board } } = this.props;
+    const { id, game: { board } } = this.props;
+
     return (
-      <SlotWrapper 
+      <SlotWrapper
         color={board[id]}
         onClick={this.handleClick.bind(this)}
       />
@@ -32,16 +34,16 @@ class Slot extends PureComponent {
 Slot.propTypes = {
   id: PropTypes.number.isRequired,
   updateBoardState: PropTypes.func.isRequired,
-  board: PropTypes.object,
+  game: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const mapStateToProps = ({ board }) => ({
-  board,
+const mapStateToProps = ({ game }) => ({
+  game,
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateBoardState: (id, player) => {
-    dispatch(updateBoard(id, player));
+  updateBoardState: (id, player, color) => {
+    dispatch(updateBoard(id, player, color));
   },  
 });
 

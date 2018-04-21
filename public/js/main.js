@@ -19736,18 +19736,22 @@ var Slot = function (_PureComponent) {
 
   _createClass(Slot, [{
     key: 'handleClick',
-    value: function handleClick(e) {
-      e.preventDefault();
+    value: function handleClick() {
       var _props = this.props,
           id = _props.id,
           updateBoardState = _props.updateBoardState,
-          board = _props.board.board;
+          _props$game = _props.game,
+          board = _props$game.board,
+          player = _props$game.player,
+          color = _props$game.color;
 
-      console.log(this.props);
+
       if ((0, _utils.validateMove)(id, board)) {
-        updateBoardState(id, 'Blue');
+        var isWinner = (0, _utils.checkWinner)(id, board, color);
+        updateBoardState(id, player, color);
+        console.log(isWinner);
       } else {
-        console.log('Invalid Move');
+        alert('Invalid Move');
       }
     }
   }, {
@@ -19755,7 +19759,8 @@ var Slot = function (_PureComponent) {
     value: function render() {
       var _props2 = this.props,
           id = _props2.id,
-          board = _props2.board.board;
+          board = _props2.game.board;
+
 
       return _react2.default.createElement(_SlotWrapper2.default, {
         color: board[id],
@@ -19770,20 +19775,20 @@ var Slot = function (_PureComponent) {
 Slot.propTypes = {
   id: _propTypes2.default.number.isRequired,
   updateBoardState: _propTypes2.default.func.isRequired,
-  board: _propTypes2.default.object
+  game: _propTypes2.default.objectOf(_propTypes2.default.string).isRequired
 };
 
 var mapStateToProps = function mapStateToProps(_ref) {
-  var board = _ref.board;
+  var game = _ref.game;
   return {
-    board: board
+    game: game
   };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    updateBoardState: function updateBoardState(id, player) {
-      dispatch((0, _actions.updateBoard)(id, player));
+    updateBoardState: function updateBoardState(id, player, color) {
+      dispatch((0, _actions.updateBoard)(id, player, color));
     }
   };
 };
@@ -26918,7 +26923,7 @@ var _boardReducer2 = _interopRequireDefault(_boardReducer);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
-  board: _boardReducer2.default
+  game: _boardReducer2.default
 });
 
 /***/ }),
@@ -26931,7 +26936,7 @@ exports.default = (0, _redux.combineReducers)({
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = board;
+exports.default = game;
 
 var _dummyData = __webpack_require__(29);
 
@@ -26939,17 +26944,27 @@ var _actionTypes = __webpack_require__(84);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var initialState = { board: (0, _dummyData.buildIntialBoard)() };
+var initialState = {
+  board: (0, _dummyData.buildIntialBoard)(),
+  player: 'Player1',
+  color: 'Blue'
+};
 
-function board() {
+function game() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments[1];
 
   if (action.type === _actionTypes.UPDATE_BOARD) {
-    console.log('state.board', state.board);
     var newBoard = [].concat(_toConsumableArray(state.board));
-    newBoard[action.payload.id] = action.payload.player;
-    return { board: newBoard };
+    var _action$payload = action.payload,
+        id = _action$payload.id,
+        player = _action$payload.player,
+        color = _action$payload.color;
+
+    newBoard[id] = color;
+    var nextPlayer = player === 'Player 1' ? 'Player 2' : 'Player 1';
+    var nextColor = color === 'Blue' ? 'Red' : 'Blue';
+    return { board: newBoard, player: nextPlayer, color: nextColor };
   }
 
   return state;
@@ -26985,10 +27000,10 @@ var actionTypes = _interopRequireWildcard(_actionTypes);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var updateBoard = exports.updateBoard = function updateBoard(id, player) {
+var updateBoard = exports.updateBoard = function updateBoard(id, player, color) {
   return {
     type: actionTypes.UPDATE_BOARD,
-    payload: { id: id, player: player }
+    payload: { id: id, player: player, color: color }
   };
 };
 
@@ -27003,6 +27018,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
  * Summary: Determines if a move is valid.
@@ -27012,6 +27028,58 @@ var validateMove = exports.validateMove = function validateMove(id, board) {
   var below = board[id + 7];
 
   return move === '' && below !== '';
+};
+
+var matchesRight = exports.matchesRight = function matchesRight(row, col, id, board, color) {
+  var total = 0;
+  var rightId = id + 1;
+  var rightRow = Math.floor(rightId / 7);
+  while (board[rightId] === color && rightRow === row) {
+    total += 1;
+    rightId += 1;
+    rightRow = Math.floor(rightId / 7);
+  }
+
+  return total;
+};
+
+var matchesLeft = function matchesLeft(row, col, id, board, color) {
+  var total = 0;
+  var leftId = id - 1;
+  var leftRow = Math.floor(leftId / 7);
+
+  while (board[leftId] === color && leftRow === row) {
+    total += 1;
+    leftId -= 1;
+    leftRow = Math.floor(leftId / 7);
+  }
+
+  return total;
+};
+
+/**
+ * Summary: Given a move, determines if the containing row is a winner.
+ * @param {Array}  move - Coordinates of move [row, col].
+ * @param {string} role - Players role.
+ * @param {array}  board - Board to check.
+ * @return {bool}  True if it is a winning move, false if not.
+ */
+var checkRow = function checkRow(row, col, id, board, color) {
+  var right = matchesRight(row, col, id, board, color);
+  var left = matchesLeft(row, col, id, board, color);
+
+  return right > 2 || left > 2 || right > 1 && left > 0 || left > 1 && right > 0;
+};
+
+var checkWinner = exports.checkWinner = function checkWinner(id, board, color) {
+  var checkBoard = [].concat(_toConsumableArray(board));
+  checkBoard[id] = color;
+  var row = Math.floor(id / 7);
+  var col = id - row * 7;
+  return checkRow(row, col, id, board, color)
+  // checkColumn(move, board, role) ||
+  // checkDiagonals(move, board, role)
+  ;
 };
 
 /***/ })
