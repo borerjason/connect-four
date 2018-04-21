@@ -12,15 +12,17 @@ class Slot extends PureComponent {
     const { id, updateBoardState, board: { board } } = this.props;
     console.log(this.props);
     if (validateMove(id, board)) {
-      updateBoardState(id, 'blue');
+      updateBoardState(id, 'Blue');
     } else {
       console.log('Invalid Move');
     }
   }
 
   render() {
+    const { id, board: { board } } = this.props;
     return (
-      <SlotWrapper
+      <SlotWrapper 
+        color={board[id]}
         onClick={this.handleClick.bind(this)}
       />
     );

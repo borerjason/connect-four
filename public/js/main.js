@@ -19745,7 +19745,7 @@ var Slot = function (_PureComponent) {
 
       console.log(this.props);
       if ((0, _utils.validateMove)(id, board)) {
-        updateBoardState(id, 'blue');
+        updateBoardState(id, 'Blue');
       } else {
         console.log('Invalid Move');
       }
@@ -19753,7 +19753,12 @@ var Slot = function (_PureComponent) {
   }, {
     key: 'render',
     value: function render() {
+      var _props2 = this.props,
+          id = _props2.id,
+          board = _props2.board.board;
+
       return _react2.default.createElement(_SlotWrapper2.default, {
+        color: board[id],
         onClick: this.handleClick.bind(this)
       });
     }
@@ -24762,7 +24767,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _templateObject = _taggedTemplateLiteral(['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: #ffffff;\n  margin: 5px;\n'], ['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: #ffffff;\n  margin: 5px;\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: ', ';\n  margin: 5px;\n'], ['\n  box-sizing: border-box; \n  width: 12%;\n  height: 12%;\n  border-radius: 50%;\n  background-color: ', ';\n  margin: 5px;\n']);
 
 var _styledComponents = __webpack_require__(32);
 
@@ -24772,7 +24777,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var SlotWrapper = _styledComponents2.default.div(_templateObject);
+var SlotWrapper = _styledComponents2.default.div(_templateObject, function (props) {
+  return props.color || '#ffffff';
+});
 
 exports.default = SlotWrapper;
 
