@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 
-export const updateBoard = (id, player, color) => ({
+export const updateBoard = (id, color, isWinner) => ({
   type: actionTypes.UPDATE_BOARD,
-  payload: { id, player, color }
+  payload: { id, color, isWinner }
 });
 

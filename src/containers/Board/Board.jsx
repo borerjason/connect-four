@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import Slot from '../Slot/Slot';
-import { buildIntialBoard } from '../../utils/dummyData';
+// import { buildIntialBoard } from '../../utils/dummyData';
 import BoardWrapper from '../../components/Wrapper';
 
 class Board extends PureComponent {
   render() {
-    const board = buildIntialBoard();
+    const board = this.props.game.board;
 
     return (
       <BoardWrapper> 
@@ -20,4 +21,8 @@ class Board extends PureComponent {
   }
 }
 
-export default Board;
+const mapStateToProps = ({ game }) => ({
+  game,
+});
+
+export default connect(mapStateToProps)(Board);

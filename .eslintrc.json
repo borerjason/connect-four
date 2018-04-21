@@ -5,6 +5,13 @@
   },
   "parser": "babel-eslint",
   "rules": {
-    "strict": 0
+    "strict": 0,
+    "object-curly-newline": [
+        "error",
+        {
+          "multiline": true,
+          "minProperties": 5
+        }
+      ]
   }
 }

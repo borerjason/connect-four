@@ -1,15 +1,27 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 
 class Header extends PureComponent {
   render() {
+    const { isWinner, color } = this.props;
+    const lastColor = color === 'Blue' ? 'Red' : 'Blue';
+    
     return (
 
       <div>
-      <p>Player 1's Turn </p>
-      <div>color</div>
-    </div>
+        { !isWinner ?
+          <div>
+            <p>{color}'s turn </p>
+          </div> :
+          <div>
+            <p>{lastColor} Wins! </p>
+          </div>
+        }
+      </div>
     );
   }
 }
 
-export default Header;
+const mapStateToProps = ({ game: { isWinner, color } }) => ({ isWinner, color });
+
+export default connect(mapStateToProps)(Header);

@@ -19560,6 +19560,8 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(58);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19580,18 +19582,33 @@ var Header = function (_PureComponent) {
   _createClass(Header, [{
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          isWinner = _props.isWinner,
+          color = _props.color;
+
+      var lastColor = color === 'Blue' ? 'Red' : 'Blue';
+
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(
-          'p',
-          null,
-          'Player 1\'s Turn '
-        ),
-        _react2.default.createElement(
+        !isWinner ? _react2.default.createElement(
           'div',
           null,
-          'color'
+          _react2.default.createElement(
+            'p',
+            null,
+            color,
+            '\'s turn '
+          )
+        ) : _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'p',
+            null,
+            lastColor,
+            ' Wins! '
+          )
         )
       );
     }
@@ -19600,7 +19617,14 @@ var Header = function (_PureComponent) {
   return Header;
 }(_react.PureComponent);
 
-exports.default = Header;
+var mapStateToProps = function mapStateToProps(_ref) {
+  var _ref$game = _ref.game,
+      isWinner = _ref$game.isWinner,
+      color = _ref$game.color;
+  return { isWinner: isWinner, color: color };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);
 
 /***/ }),
 /* 28 */
@@ -19619,11 +19643,11 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(58);
+
 var _Slot = __webpack_require__(30);
 
 var _Slot2 = _interopRequireDefault(_Slot);
-
-var _dummyData = __webpack_require__(29);
 
 var _Wrapper = __webpack_require__(31);
 
@@ -19636,6 +19660,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+// import { buildIntialBoard } from '../../utils/dummyData';
+
 
 var Board = function (_PureComponent) {
   _inherits(Board, _PureComponent);
@@ -19649,7 +19675,7 @@ var Board = function (_PureComponent) {
   _createClass(Board, [{
     key: 'render',
     value: function render() {
-      var board = (0, _dummyData.buildIntialBoard)();
+      var board = this.props.game.board;
 
       return _react2.default.createElement(
         _Wrapper2.default,
@@ -19668,25 +19694,17 @@ var Board = function (_PureComponent) {
   return Board;
 }(_react.PureComponent);
 
-exports.default = Board;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var buildIntialBoard = exports.buildIntialBoard = function buildIntialBoard() {
-  var board = new Array(7 * 6);
-  board.fill('');
-  return board;
+var mapStateToProps = function mapStateToProps(_ref) {
+  var game = _ref.game;
+  return {
+    game: game
+  };
 };
 
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Board);
+
 /***/ }),
+/* 29 */,
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19742,14 +19760,13 @@ var Slot = function (_PureComponent) {
           updateBoardState = _props.updateBoardState,
           _props$game = _props.game,
           board = _props$game.board,
-          player = _props$game.player,
-          color = _props$game.color;
+          color = _props$game.color,
+          isWinner = _props$game.isWinner;
 
-
-      if ((0, _utils.validateMove)(id, board)) {
-        var isWinner = (0, _utils.checkWinner)(id, board, color);
-        updateBoardState(id, player, color);
-        console.log(isWinner);
+      console.log('color', color);
+      if ((0, _utils.validateMove)(id, board, isWinner)) {
+        var winner = (0, _utils.checkWinner)(id, board, color);
+        updateBoardState(id, color, winner);
       } else {
         alert('Invalid Move');
       }
@@ -19761,7 +19778,7 @@ var Slot = function (_PureComponent) {
           id = _props2.id,
           board = _props2.game.board;
 
-
+      console.log('board id', board[id]);
       return _react2.default.createElement(_SlotWrapper2.default, {
         color: board[id],
         onClick: this.handleClick.bind(this)
@@ -19775,20 +19792,18 @@ var Slot = function (_PureComponent) {
 Slot.propTypes = {
   id: _propTypes2.default.number.isRequired,
   updateBoardState: _propTypes2.default.func.isRequired,
-  game: _propTypes2.default.objectOf(_propTypes2.default.string).isRequired
+  game: _propTypes2.default.objectOf(_propTypes2.default.shape).isRequired
 };
 
 var mapStateToProps = function mapStateToProps(_ref) {
   var game = _ref.game;
-  return {
-    game: game
-  };
+  return { game: game };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    updateBoardState: function updateBoardState(id, player, color) {
-      dispatch((0, _actions.updateBoard)(id, player, color));
+    updateBoardState: function updateBoardState(id, color, isWinner) {
+      dispatch((0, _actions.updateBoard)(id, color, isWinner));
     }
   };
 };
@@ -26938,16 +26953,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = game;
 
-var _dummyData = __webpack_require__(29);
+var _utils = __webpack_require__(86);
 
 var _actionTypes = __webpack_require__(84);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var initialState = {
-  board: (0, _dummyData.buildIntialBoard)(),
-  player: 'Player1',
-  color: 'Blue'
+  board: (0, _utils.buildIntialBoard)(),
+  color: 'Blue',
+  isWinner: false
 };
 
 function game() {
@@ -26958,13 +26973,17 @@ function game() {
     var newBoard = [].concat(_toConsumableArray(state.board));
     var _action$payload = action.payload,
         id = _action$payload.id,
-        player = _action$payload.player,
-        color = _action$payload.color;
+        color = _action$payload.color,
+        isWinner = _action$payload.isWinner;
 
-    newBoard[id] = color;
-    var nextPlayer = player === 'Player 1' ? 'Player 2' : 'Player 1';
     var nextColor = color === 'Blue' ? 'Red' : 'Blue';
-    return { board: newBoard, player: nextPlayer, color: nextColor };
+    newBoard[id] = color;
+
+    return {
+      board: newBoard,
+      color: nextColor,
+      isWinner: isWinner
+    };
   }
 
   return state;
@@ -27000,10 +27019,10 @@ var actionTypes = _interopRequireWildcard(_actionTypes);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var updateBoard = exports.updateBoard = function updateBoard(id, player, color) {
+var updateBoard = exports.updateBoard = function updateBoard(id, color, isWinner) {
   return {
     type: actionTypes.UPDATE_BOARD,
-    payload: { id: id, player: player, color: color }
+    payload: { id: id, color: color, isWinner: isWinner }
   };
 };
 
@@ -27021,65 +27040,157 @@ Object.defineProperty(exports, "__esModule", {
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
- * Summary: Determines if a move is valid.
+ * Summary: Builds empty board array.
  */
-var validateMove = exports.validateMove = function validateMove(id, board) {
+var buildIntialBoard = exports.buildIntialBoard = function buildIntialBoard() {
+  var board = new Array(7 * 6);
+  board.fill('');
+  return board;
+};
+
+/**
+ * Summary: Determines if a move is valid.
+ * @param {number} id Index of attempted move.
+ * @param {array}  board Board to check.
+ * @param {bool}  isWinner True if the current board contains a winner, false if not.
+ * @return {bool}  True if valid, false if not valid.
+ */
+var validateMove = exports.validateMove = function validateMove(id, board, isWinner) {
   var move = board[id];
   var below = board[id + 7];
 
-  return move === '' && below !== '';
+  return move === '' && below !== '' && !isWinner;
 };
 
-var matchesRight = exports.matchesRight = function matchesRight(row, col, id, board, color) {
+/**
+ * Summary: Get row number from board array index number.
+ * @param {number} id Index in board.
+ * @return {number} Row in board.
+ */
+var getRow = function getRow(id) {
+  return Math.floor(id / 7);
+};
+
+/**
+ * Summary: Matching Functions.
+ * Description: Calculates how many pieces adjacent to current move belong to same player.
+ * @param {number}  col Column in board.
+ * @param {number}  row Row in board.
+ * @param {array}   board Board to check.
+ * @param {string}  color Player to chcek.
+ * @param {number}  inc Increment id to find next piece.
+ * @param {number}  dec Decrement id to find next piece
+ * @return {number} Total adjacent matches.
+ */
+
+var matchesBelow = function matchesBelow(col, id, board, color) {
   var total = 0;
-  var rightId = id + 1;
-  var rightRow = Math.floor(rightId / 7);
-  while (board[rightId] === color && rightRow === row) {
+  var belowId = id + 7;
+
+  while (board[belowId] === color) {
     total += 1;
-    rightId += 1;
-    rightRow = Math.floor(rightId / 7);
+    belowId += 7;
   }
 
   return total;
 };
 
-var matchesLeft = function matchesLeft(row, col, id, board, color) {
+var matchesRight = exports.matchesRight = function matchesRight(row, id, board, color) {
+  var total = 0;
+  var rightId = id + 1;
+  var rightRow = getRow(rightId);
+  while (board[rightId] === color && rightRow === row) {
+    total += 1;
+    rightId += 1;
+    rightRow = getRow(rightId);
+  }
+
+  return total;
+};
+
+var matchesLeft = function matchesLeft(row, id, board, color) {
   var total = 0;
   var leftId = id - 1;
-  var leftRow = Math.floor(leftId / 7);
+  var leftRow = getRow(leftId);
 
   while (board[leftId] === color && leftRow === row) {
     total += 1;
     leftId -= 1;
-    leftRow = Math.floor(leftId / 7);
+    leftRow = getRow(leftId);
+  }
+
+  return total;
+};
+
+var matchesDiagonalDown = function matchesDiagonalDown(row, id, board, color, inc) {
+  var total = 0;
+  var diagId = id + inc;
+  var diagRow = getRow(diagId);
+
+  while (board[diagId] === color && diagRow > row) {
+    total += 1;
+    diagId += inc;
+    diagRow = getRow(diagId);
+  }
+
+  return total;
+};
+
+var matchesDiagonalUp = function matchesDiagonalUp(row, id, board, color, dec) {
+  var total = 0;
+  var diagId = id - dec;
+  var diagRow = getRow(diagId);
+
+  while (board[diagId] === color && diagRow < row) {
+    total += 1;
+    diagId -= dec;
+    diagRow = getRow(diagId);
   }
 
   return total;
 };
 
 /**
- * Summary: Given a move, determines if the containing row is a winner.
- * @param {Array}  move - Coordinates of move [row, col].
- * @param {string} role - Players role.
- * @param {array}  board - Board to check.
+ * Summary: Check row, col, and diagonals of current play for winners.
+ * @param {number} col Column in board.
+ * @param {number} row Row in board.
+ * @param {array}  board Board to check.
+ * @param {string} color Player to chcek.
  * @return {bool}  True if it is a winning move, false if not.
  */
-var checkRow = function checkRow(row, col, id, board, color) {
-  var right = matchesRight(row, col, id, board, color);
-  var left = matchesLeft(row, col, id, board, color);
+var checkRow = function checkRow(row, id, board, color) {
+  var right = matchesRight(row, id, board, color);
+  var left = matchesLeft(row, id, board, color);
 
   return right > 2 || left > 2 || right > 1 && left > 0 || left > 1 && right > 0;
 };
 
+var checkColumn = function checkColumn(col, id, board, color) {
+  return matchesBelow(col, id, board, color) > 2;
+};
+
+var checkDiagonals = function checkDiagonals(row, id, board, color) {
+  var downLeft = matchesDiagonalDown(row, id, board, color, 6);
+  var downRight = matchesDiagonalDown(row, id, board, color, 8);
+  var upLeft = matchesDiagonalUp(row, id, board, color, 8);
+  var upRight = matchesDiagonalUp(row, id, board, color, 6);
+
+  return downLeft === 3 || downRight === 3 || upLeft === 3 || upRight === 3 || downLeft > 0 && upRight > 1 || downRight > 0 && upLeft > 1 || downLeft > 1 && upRight > 0 || downRight > 1 && upLeft > 0;
+};
+
+/**
+ * Summary: Identifies if latest move is a winner.
+ * @param {number} id Index of latest move in board.
+ * @param {array} board Board to check.
+ * @param {string} color Player to chcek.
+ * @return {bool}  True if it is a winning move, false if not.
+ */
 var checkWinner = exports.checkWinner = function checkWinner(id, board, color) {
   var checkBoard = [].concat(_toConsumableArray(board));
   checkBoard[id] = color;
-  var row = Math.floor(id / 7);
+  var row = getRow(id);
   var col = id - row * 7;
-  return checkRow(row, col, id, board, color)
-  // checkColumn(move, board, role) ||
-  // checkDiagonals(move, board, role)
-  ;
+  return checkRow(row, id, board, color) || checkColumn(col, id, board, color) || checkDiagonals(row, id, board, color);
 };
 
 /***/ })
