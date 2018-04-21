@@ -8,27 +8,24 @@ const Header = (props) => {
   const { isWinner, color, handleClick } = props;
   const lastColor = color === 'Blue' ? 'Red' : 'Blue';
 
+  const msg = isWinner ? (
+    <Wrapper>
+      <Msg color={lastColor}>{lastColor} Wins!</Msg>
+      <button
+        className="btn btn-primary"
+        onClick={handleClick}
+      >Play Again
+      </button>
+    </Wrapper>
+  ) : (
+    <Msg color={color}>
+      {`${color}'`}s turn
+    </Msg>
+  );
+
   return (
     <Wrapper>
-      { !isWinner ?
-        <Wrapper>
-          <Msg
-            color={color}
-          >{`${color}'`}s turn
-          </Msg>
-        </Wrapper> :
-        <Wrapper>
-          <Msg
-            color={lastColor}
-          >{lastColor} Wins!
-          </Msg>
-          <button
-            className="btn btn-primary"
-            onClick={handleClick}
-          >Play Again
-          </button>
-        </Wrapper>
-      }
+      {msg}
     </Wrapper>
   );
 };

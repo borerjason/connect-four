@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const BoardWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -8,13 +15,6 @@ export const BoardWrapper = styled.div`
   width: 500px;
   height: 500px;
   background-color: yellow;
-`;
-
-export const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const SlotWrapper = styled.div`

@@ -12,7 +12,6 @@ const Board = (props) => {
       {board.map((slot, index) => (
         <Slot
           id={index}
-          value={slot}
           key={Math.random() * 1000}
         />))}
     </BoardWrapper>
