@@ -2,22 +2,21 @@
 
 ## Usage
 
-clone repo:
+Clone repo:
 ```
-npm clone https://github.com/borerjason/connect-four.git  
+git clone https://github.com/borerjason/connect-four.git  
 ```
-cd into directory
 
-install dependencies:
+cd into directory & install dependencies:
 ```
 npm install
 ```
-start server:
+Start server:
 ```
 npm start
 ```
 
-navigate to:
+Navigate to:
 ```
 localhost:3000
 ```
