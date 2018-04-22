@@ -2182,9 +2182,7 @@ var resetBoard = exports.resetBoard = function resetBoard() {
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(34);
-(function webpackMissingModule() { throw new Error("Cannot find module \"open\""); }());
-module.exports = __webpack_require__(84);
+module.exports = __webpack_require__(34);
 
 
 /***/ }),
@@ -27157,12 +27155,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Slot);
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports) {
-
-module.exports = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css\">\n  <link href=\"https://fonts.googleapis.com/css?family=Gaegu\" rel=\"stylesheet\">\n  <title>connect-4</title>\n</head>\n<body>\n  <div id=\"app\"></div>\n  <script type=\"text/javascript\" src=\"js/main.js\"></script>\n<script type=\"text/javascript\" src=\"js/main.js\"></script></body>\n\n</html>";
 
 /***/ })
 /******/ ]);

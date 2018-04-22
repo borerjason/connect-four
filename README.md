@@ -1,4 +1,31 @@
-# connect-four
+## connect-four
+
+## Usage
+
+clone repo:
+```
+npm clone https://github.com/borerjason/connect-four.git  
+```
+cd into directory
+
+install dependencies:
+```
+npm install
+```
+compile project:
+```
+npm run build
+```
+
+Open in your browser:
+```
+public/index.html
+```
+
+## Main Technologies
+  - react  
+  - redux  
+  - styled-components  
 
 ## App Design:
 
