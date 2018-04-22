@@ -3,7 +3,7 @@
 
 ## Video Sample
 
-[<img src="images/four.png" height="200" width="200">](https://www.youtube.com/watch?v=fNkz_jUvDYA&feature=youtu.be)
+[<img src="images/four.png" height="300" width="300">](https://www.youtube.com/watch?v=fNkz_jUvDYA&feature=youtu.be)
 ## Usage
 
 Clone repo:
