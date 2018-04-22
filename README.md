@@ -1,7 +1,7 @@
 ## Connect Four
 > Classic game implemented with react/redux and a node server.
 
-## Video Sample
+## Demo
 
 [<img src="images/four.png" height="300" width="300">](https://www.youtube.com/watch?v=fNkz_jUvDYA&feature=youtu.be)
 ## Usage
@@ -35,10 +35,10 @@ localhost:3000
 ## App Design:
 
 1. App
-   - Summmary: Renders header and board components on start.   
+   - Summmary: Renders header and board components.   
       
 2. Header
-   - Summary: Renders who's turn it is, who the winner is, and if user wants to start a new game.  
+   - Summary: Displays current player, the winner, and if user wants to start a new game.  
    - Props:
      - current player
      - isWinner   
@@ -46,11 +46,11 @@ localhost:3000
   
 3. Board
    - Summary: Renders board slots  
-   - State:  
+   - Props:  
      - Board array  
   
 4. Slot  
-   - Summary: Validates move, renders color in slot and updates slot value in board.  
+   - Summary: Validates move, updates color in slot and slot value in board.  
    - Props:  
      - current player 
      - isWinner  
