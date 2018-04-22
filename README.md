@@ -35,20 +35,25 @@ localhost:3000
 ## App Design:
 
 1. App
-    Summary: Renders header and board on start. 
-2. Header
-  - Summary: Renders who's turn it is, who the winner is, OR if want to start new game
-  - State:
-    - who's turn (number and color)
-    - isWinner?
-    - activeGame? (or should is winner be fine)
+  - Summmary: Renders header and board components on start.   
+      
+2. Header  
+  - Summary: Renders who's turn it is, who the winner is, and if user wants to start a new game.  
+  - Props:
+    - current player
+    - isWinner   
+    - reset board (fcn)  
+  
 3. Board
-   Summary: Renders slots      
-4. Slot
-   Summary: Displays color or play 
-   - State
-     Who's turn (determine what color to play)
-   - Methods
-     - Validate move
-     - Check for winner
-     - Update active player
+   - Summary: Renders board slots  
+   - State:  
+     - Board array  
+  
+4. Slot  
+   - Summary: Validates move, renders color in slot and updates slot value in board.  
+   - Props:  
+     - current player 
+     - isWinner  
+     - slot id  
+     - Update board (fcn)
+
