@@ -12,14 +12,14 @@ install dependencies:
 ```
 npm install
 ```
-compile project:
+start server:
 ```
-npm run build
+npm start
 ```
 
-Open in your browser:
+navigate to:
 ```
-public/index.html
+localhost:3000
 ```
 
 ## Main Technologies
