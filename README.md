@@ -1,6 +1,9 @@
 ## Connect Four
 > Classic game implemented with react/redux and a node server.
 
+## Video Sample
+
+[![<img src="images/four.png">]](https://www.youtube.com/watch?v=fNkz_jUvDYA&feature=youtu.be)
 ## Usage
 
 Clone repo:
@@ -12,6 +15,7 @@ cd into directory & install dependencies:
 ```
 npm install
 ```
+
 Start server:
 ```
 npm start
@@ -26,6 +30,7 @@ localhost:3000
   - react  
   - redux  
   - styled-components  
+  - node/express
 
 ## App Design:
 
