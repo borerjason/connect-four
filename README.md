@@ -35,14 +35,14 @@ localhost:3000
 ## App Design:
 
 1. App
-  - Summmary: Renders header and board components on start.   
+   - Summmary: Renders header and board components on start.   
       
-2. Header  
-  - Summary: Renders who's turn it is, who the winner is, and if user wants to start a new game.  
-  - Props:
-    - current player
-    - isWinner   
-    - reset board (fcn)  
+2. Header
+   - Summary: Renders who's turn it is, who the winner is, and if user wants to start a new game.  
+   - Props:
+     - current player
+     - isWinner   
+     - reset board (fcn)  
   
 3. Board
    - Summary: Renders board slots  
