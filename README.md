@@ -1,4 +1,5 @@
-## connect-four
+## Connect Four
+> Classic game implemented with react/redux and a node server.
 
 ## Usage
 
