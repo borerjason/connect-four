@@ -7,24 +7,18 @@ module.exports = {
     path: path.resolve(__dirname, 'public'),
     filename: 'js/[name].js',
   },
-  resolve: {
-    extensions: ['.jsx', '.js'],
-  },
+  resolve: { extensions: ['.jsx', '.js'] },
   module: {
     rules: [
       {
         test: /.jsx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        use: { loader: 'babel-loader' },
       },
       {
         test: /\.html$/,
         use: [
-          {
-            loader: 'html-loader',
-          },
+          { loader: 'html-loader' },
         ],
       },
     ],
